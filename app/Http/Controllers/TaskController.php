@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
@@ -12,7 +13,6 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-//        $users = User::all();
 
         return view('task.index', compact('tasks'));
     }
@@ -25,12 +25,11 @@ class TaskController extends Controller
         return view('task.create', compact('task'));
     }
 
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
+        $data = $request->validated();
+
         $user = auth()->user();
-        $data = $this->validate($request, [
-            'name' => 'required|max:255',
-        ]);
 
         $task = new Task();
         $task->fill($data);
@@ -53,11 +52,9 @@ class TaskController extends Controller
         return view('task.edit', compact('task'));
     }
 
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
-        $data = $this->validate($request, [
-            'name' => 'required|max:255',
-        ]);
+        $data = $request->validated();
 
         $task->fill($data);
         $task->save();
