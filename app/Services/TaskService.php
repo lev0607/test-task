@@ -13,7 +13,6 @@ class TaskService
         $task->fill($data);
         $task->user()->associate($user);
         $task->save();
-
     }
     public function update(array $data, Task $task)
     {
