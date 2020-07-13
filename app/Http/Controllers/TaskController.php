@@ -70,6 +70,8 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
+        $this->authorize('delete', $task);
+
         if ($task) {
             $task->delete();
         }
